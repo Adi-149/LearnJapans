@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Lyrics Study - Belajar Bahasa Jepang</title>
+    <!-- Stylesheet terpisah sesuai standar modularitas -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header & Menu Navigasi Utama -->
+    <header class="header">
+        <div class="header-top">
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Ganti Mode Gelap / Terang">🌙 Mode
+                Gelap</button>
+        </div>
+        <h1>日本語学習</h1>
+        <p>Japanese Lyrics Study &bull; Platform Interaktif Belajar Bahasa Jepang</p>
+        <nav>
+            <button class="nav-active" data-page="lyrics">📖 Baca Lirik</button>
+            <button data-page="kana">🔤 Hiragana & Katakana</button>
+            <button data-page="kanji">📚 Kosakata & Hafalan</button>
+            <button data-page="quiz">❓ Kuis Latihan</button>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- HALAMAN 1: BACA LIRIK -->
+        <section id="lyrics" class="page active">
+            <h2>📖 Belajar Membaca Lirik</h2>
+
+            <div class="controls">
+                <button id="btnToggleRomaji">👁️ Tampilkan/Sembunyikan Romaji</button>
+                <button id="btnToggleMeaning">📝 Tampilkan/Sembunyikan Arti</button>
+                <button id="btnPlayMusic" class="btn-music">🎵 Putar Musik</button>
+                <button id="btnStopReading" class="btn-danger">⏹ Berhenti Suara</button>
+            </div>
+
+            <!-- Mini Player Bar Pengiring Lirik -->
+            <div class="music-player-bar" id="musicPlayerWidget">
+                <div class="music-info">
+                    <span class="music-icon">🎵</span>
+                    <div class="music-text">
+                        <strong>Abe Asami - Kimi wo Tsurete Iku</strong>
+                        <small>Musik Pengiring Lagu Lirik</small>
+                    </div>
+                </div>
+                <div class="music-controls">
+                    <span id="musicTimeDisplay" class="music-time">00:00 / 00:00</span>
+                    <input type="range" id="musicProgressBar" class="music-progress" min="0" max="100" value="0" title="Geser untuk mengatur posisi lagu">
+                </div>
+            </div>
+
+            <div id="lyricsContainer"></div>
+
+            <div class="info-box">
+                <h3>💡 Petunjuk Belajar & Legenda Warna</h3>
+                <div class="color-legend">
+                    <span class="legend-badge badge-kanji">● Kanji (Merah)</span>
+                    <span class="legend-badge badge-hiragana">● Hiragana (Hijau)</span>
+                    <span class="legend-badge badge-katakana">● Katakana (Oranye)</span>
+                    <span class="legend-badge badge-romaji">● Romaji (Biru)</span>
+                    <span class="legend-badge badge-reading">● Cara Baca (Ungu)</span>
+                </div>
+                <p>
+                    &bull; <strong>Fitur Baca Per Baris:</strong> Klik tombol <em>"🔊 Baca Baris Ini"</em> di setiap
+                    baris untuk mendengarkan pengucapan per baris secara fokus.<br>
+                    &bull; <strong>Teks Interaktif:</strong> Seluruh teks Jepang dapat diklik! Klik karakter Kanji
+                    (merah), Hiragana (hijau), atau Katakana (oranye) untuk membuka popup cara baca (ungu), Romaji
+                    (biru), contoh kata, arti bahasa Indonesia, dan audio.
+                </p>
+            </div>
+        </section>
+
+        <!-- HALAMAN 2: HIRAGANA & KATAKANA DENGAN TOMBOL TOGGLE RAPI -->
+        <section id="kana" class="page">
+            <div class="kana-header-bar">
+                <h2>
+                    🔤 Tabel Huruf:
+                    <span id="kanaModeLabel" class="kana-mode-indicator">Hiragana</span>
+                </h2>
+                <!-- Tombol toggle pengganti: pas diklik ganti Katakana, pas diklik lagi ganti Hiragana -->
+                <button id="kanaToggleBtn" class="kana-toggle-btn">🔄 Ganti ke Katakana</button>
+            </div>
+
+            <input type="text" id="kanaSearch" placeholder="Cari huruf atau Romaji (contoh: 'a', 'ka', 'き', 'ア')...">
+
+            <!-- Grid tunggal responsif & rapi -->
+            <div id="kanaGrid" class="kana-grid"></div>
+        </section>
+
+        <!-- HALAMAN 3: KOSAKATA & HAFALAN (HARIAN, HEWAN, PERCAKAPAN, BENDA, BUAH, LIRIK) -->
+        <section id="kanji" class="page">
+            <h2>📚 Kosakata, Hafalan & Percakapan Jepang</h2>
+
+            <!-- Bar Tab Kategori Hafalan & Percakapan -->
+            <div class="vocab-category-bar">
+                <button class="vocab-tab active" data-category="all">🔘 Semua (96)</button>
+                <button class="vocab-tab" data-category="daily">☀️ Kosakata Harian (18)</button>
+                <button class="vocab-tab" data-category="animals">🐾 Nama Hewan (16)</button>
+                <button class="vocab-tab" data-category="conversations">💬 Percakapan Sehari-hari (20)</button>
+                <button class="vocab-tab" data-category="objects">📦 Benda & Barang (15)</button>
+                <button class="vocab-tab" data-category="fruits">🍎 Buah-buahan (12)</button>
+                <button class="vocab-tab" data-category="lyrics">🎵 Dari Lirik Lagu (15)</button>
+            </div>
+
+            <input type="text" id="kanjiSearch" placeholder="Cari kosakata, kalimat percakapan, Kanji, Romaji, atau arti...">
+
+            <div id="kanjiContainer" class="word-grid"></div>
+        </section>
+
+        <!-- HALAMAN 4: KUIS LATIHAN -->
+        <section id="quiz" class="page">
+            <h2>❓ Kuis Bahasa Jepang</h2>
+
+            <div class="quiz-box">
+                <p id="quizNumber">Pertanyaan 1</p>
+                <h3 id="quizQuestion">Pertanyaan akan muncul di sini</h3>
+
+                <div id="quizOptions"></div>
+
+                <div id="quizFeedback"></div>
+
+                <button id="quizNextBtn">Pertanyaan Berikutnya &rarr;</button>
+            </div>
+
+            <p id="quizScore"></p>
+        </section>
+
+    </main>
+
+    <!-- MODAL POPUP CARA BACA KARAKTER JEPANG (KANJI / KANA) -->
+    <div id="readingPopup" class="popup">
+        <div class="popup-content">
+            <button class="close-popup" title="Tutup Popup">&times;</button>
+
+            <span id="popupCategory" class="popup-category-badge">Karakter Kanji</span>
+            <h1 id="popupKanji">其</h1>
+
+            <p class="popup-label">Cara Baca (Furigana / Kana)</p>
+            <h2 id="popupKana">そ</h2>
+
+            <p class="popup-label">Romaji</p>
+            <h3 id="popupRomaji">So</h3>
+
+            <hr>
+
+            <p class="popup-label">Contoh Kata / Konteks</p>
+            <h3 id="popupWord">其処（そこ）</h3>
+
+            <p class="popup-label">Arti Bahasa Indonesia</p>
+            <p id="popupMeaning">Di sana</p>
+
+            <button id="popupSpeakBtn" class="btn-popup-speak">🔊 Dengarkan Pengucapan</button>
+        </div>
+    </div>
+
+    <!-- Modul JavaScript Berbasis Standar OOP -->
+    <script src="js/data.js"></script>
+    <script src="js/SpeechService.js"></script>
+    <script src="js/MusicPlayer.js"></script>
+    <script src="js/ModalManager.js"></script>
+    <script src="js/LyricsManager.js"></script>
+    <script src="js/KanaManager.js"></script>
+    <script src="js/VocabularyManager.js"></script>
+    <script src="js/QuizManager.js"></script>
+    <script src="js/App.js"></script>
+
+</body>
+
+</html>
