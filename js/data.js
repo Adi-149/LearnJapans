@@ -1325,6 +1325,165 @@ const kanaData = [
     ["ん", "n", "ン"]
 ];
 
+// Tabel Gojūon Terstruktur (Tepat 5 Kotak Per Baris)
+// - Row ya: ya, [kosong], yu, [kosong], yo (2 kotak kosong)
+// - Row wa: wa, [kosong], [kosong], [kosong], wo
+// - Row n: n sendirian di akhir
+const gojuonRows = [
+    // a i u e o
+    [["あ", "a", "ア"], ["い", "i", "イ"], ["う", "u", "ウ"], ["え", "e", "エ"], ["お", "o", "オ"]],
+    // ka ki ku ke ko
+    [["か", "ka", "カ"], ["き", "ki", "キ"], ["く", "ku", "ク"], ["け", "ke", "ケ"], ["こ", "ko", "コ"]],
+    // sa shi su se so
+    [["さ", "sa", "サ"], ["し", "shi", "シ"], ["す", "su", "ス"], ["せ", "se", "セ"], ["そ", "so", "ソ"]],
+    // ta chi tsu te to
+    [["た", "ta", "タ"], ["ち", "chi", "チ"], ["つ", "tsu", "ツ"], ["て", "te", "テ"], ["と", "to", "ト"]],
+    // na ni nu ne no
+    [["な", "na", "ナ"], ["に", "ni", "ニ"], ["ぬ", "nu", "ヌ"], ["ね", "ne", "ネ"], ["の", "no", "ノ"]],
+    // ha hi fu he ho
+    [["は", "ha", "ハ"], ["ひ", "hi", "ヒ"], ["ふ", "fu", "フ"], ["へ", "he", "ヘ"], ["ほ", "ho", "ホ"]],
+    // ma mi mu me mo
+    [["ま", "ma", "マ"], ["み", "mi", "ミ"], ["む", "mu", "ム"], ["め", "me", "メ"], ["も", "mo", "モ"]],
+    // ya (kosong) yu (kosong) yo -> 5 kotak tampilan, 2 kotak kosong
+    [["や", "ya", "ヤ"], null, ["ゆ", "yu", "ユ"], null, ["よ", "yo", "ヨ"]],
+    // ra ri ru re ro
+    [["ら", "ra", "ラ"], ["り", "ri", "リ"], ["る", "ru", "ル"], ["れ", "re", "レ"], ["ろ", "ro", "ロ"]],
+    // wa (kosong) (kosong) (kosong) wo
+    [["わ", "wa", "ワ"], null, null, null, ["を", "wo", "ヲ"]],
+    // n sendirian di akhir pada kotak tengah (simetris & rapi dipandang)
+    [null, null, ["ん", "n", "ン"], null, null]
+];
+
+// Tabel Dakuon & Handakuon Terstruktur (Tepat 5 Kotak Per Baris)
+const dakuonRows = [
+    // ga gi gu ge go
+    [["が", "ga", "ガ"], ["ぎ", "gi", "ギ"], ["ぐ", "gu", "グ"], ["げ", "ge", "ゲ"], ["ご", "go", "ゴ"]],
+    // za ji zu ze zo
+    [["ざ", "za", "ザ"], ["じ", "ji", "ジ"], ["ず", "zu", "ズ"], ["ぜ", "ze", "ゼ"], ["ぞ", "zo", "ゾ"]],
+    // da ji dzu de do
+    [["だ", "da", "ダ"], ["ぢ", "ji", "ヂ"], ["づ", "dzu", "ヅ"], ["で", "de", "デ"], ["ど", "do", "ド"]],
+    // ba bi bu be bo
+    [["ば", "ba", "バ"], ["び", "bi", "ビ"], ["ぶ", "bu", "ブ"], ["べ", "be", "ベ"], ["ぼ", "bo", "ボ"]],
+    // pa pi pu pe po (Handakuon)
+    [["ぱ", "pa", "パ"], ["ぴ", "pi", "ピ"], ["ぷ", "pu", "プ"], ["ぺ", "pe", "ペ"], ["ぽ", "po", "ポ"]]
+];
+
+// Tabel Yōon (Kombinasi Huruf Baris 'i' + ya/yu/yo kecil) - 3 Kotak Per Baris
+const yoonRows = [
+    [["きゃ", "kya", "キャ"], ["きゅ", "kyu", "キュ"], ["きょ", "kyo", "キョ"]],
+    [["しゃ", "sha", "シャ"], ["しゅ", "shu", "シュ"], ["しょ", "sho", "ショ"]],
+    [["ちゃ", "cha", "チャ"], ["ちゅ", "chu", "チュ"], ["ちょ", "cho", "チョ"]],
+    [["にゃ", "nya", "ニャ"], ["にゅ", "nyu", "ニュ"], ["にょ", "nyo", "ニョ"]],
+    [["ひゃ", "hya", "ヒャ"], ["ひゅ", "hyu", "ヒュ"], ["ひょ", "hyo", "ヒョ"]],
+    [["みゃ", "mya", "ミャ"], ["みゅ", "myu", "ミュ"], ["みょ", "myo", "ミョ"]],
+    [["りゃ", "rya", "リャ"], ["りゅ", "ryu", "リュ"], ["りょ", "ryo", "リョ"]],
+    [["ぎゃ", "gya", "ギャ"], ["ぎゅ", "gyu", "ギュ"], ["ぎょ", "gyo", "ギョ"]],
+    [["じゃ", "ja", "ジャ"], ["じゅ", "ju", "ジュ"], ["じょ", "jo", "ジョ"]],
+    [["びゃ", "bya", "ビャ"], ["びゅ", "byu", "ビュ"], ["びょ", "byo", "ビョ"]],
+    [["ぴゃ", "pya", "ピャ"], ["ぴゅ", "pyu", "ピュ"], ["ぴょ", "pyo", "ピョ"]]
+];
+
+// Panduan Lengkap Cara Baca Huruf Kecil & Tanda Khusus
+const smallKanaGuide = [
+    {
+        id: "sokuon",
+        category: "促音 (Sokuon) - Tsu Kecil",
+        hira: "っ",
+        kata: "ッ",
+        romaji: "tsu kecil (konsonan ganda)",
+        description: "Huruf 'っ' (Hiragana) dan 'ッ' (Katakana) berukuran sekitar 1/4 lebih kecil dari huruf normal 'つ / ツ'. Huruf ini TIDAK dibaca sebagai 'tsu', melainkan berfungsi sebagai tanda jeda atau hentian sejenak (1 ketukan / 1 mora) yang melipatgandakan bunyi konsonan berikutnya (konsonan ganda: kk, ss, tt, pp, dd).",
+        rules: [
+            "Tahan nafas / hentikan suara sejenak 1 ketukan sebelum mengucapkan konsonan berikutnya.",
+            "Sebelum konsonan T: き + っ + と = きっと (kitto) — Bukan kito, ada jeda penekanan konsonan 't'.",
+            "Sebelum konsonan K: が + っ + こ + う = がっこう (gakkou) — Jeda penekanan pada konsonan 'k'.",
+            "Sebelum konsonan S: ざ + っ + し = ざっし (zasshi) — Jeda penekanan pada konsonan 's'.",
+            "Sebelum konsonan P: き + っ + ぷ = きっぷ (kippu) — Jeda penekanan pada konsonan 'p'."
+        ],
+        examples: [
+            { jp: "きっと", romaji: "kitto", meaning: "Pasti / Tentu" },
+            { jp: "がっこう", romaji: "gakkou", meaning: "Sekolah" },
+            { jp: "きって", romaji: "kitte", meaning: "Perangko" },
+            { jp: "混じってて", romaji: "majittete", meaning: "Bercampur (dari lirik lagu)" },
+            { jp: "ベッド", romaji: "beddo", meaning: "Tempat tidur (bed)" },
+            { jp: "カップ", romaji: "kappu", meaning: "Cangkir (cup)" },
+            { jp: "サッカー", romaji: "sakkaa", meaning: "Sepak bola (soccer)" },
+            { jp: "チケット", romaji: "chiketto", meaning: "Tiket (ticket)" }
+        ]
+    },
+    {
+        id: "yoon",
+        category: "拗音 (Yōon) - Ya, Yu, Yo Kecil",
+        hira: "ゃ ゅ ょ",
+        kata: "ャ ュ ョ",
+        romaji: "ya, yu, yo (kecil)",
+        description: "Huruf 'ゃ/ャ', 'ゅ/ュ', 'ょ/ョ' ditulis berukuran kecil di sebelah kanan huruf vokal baris 'i' (き, し, ち, に, ひ, み, り, ぎ, じ, び, ぴ). Huruf ini meleburkan vokal 'i' menjadi satu suku kata kombinasi berakhiran bunyi -ya, -yu, atau -yo (diucapkan dalam 1 ketukan lancar).",
+        rules: [
+            "Huruf baris 'i' + ゃ / ャ = Dibaca melebur berakhiran bunyi '-ya' (Contoh: き + ゃ = kya, bukan ki-ya).",
+            "Huruf baris 'i' + ゅ / ュ = Dibaca melebur berakhiran bunyi '-yu' (Contoh: し + ゅ = shu, bukan shi-yu).",
+            "Huruf baris 'i' + ょ / ョ = Dibaca melebur berakhiran bunyi '-yo' (Contoh: ち + ょ = cho, き + ょ = kyo).",
+            "Pada Katakana, sering dipakai untuk kata modern luar negeri seperti シャツ (shatsu) dan ジュース (juusu)."
+        ],
+        examples: [
+            { jp: "お茶（おちゃ）", romaji: "ocha", meaning: "Teh Jepang" },
+            { jp: "牛乳（ぎゅうにゅう）", romaji: "gyuunyuu", meaning: "Susu sapi" },
+            { jp: "今日（きょう）", romaji: "kyou", meaning: "Hari ini" },
+            { jp: "勉強（べんきょう）", romaji: "benkyou", meaning: "Belajar" },
+            { jp: "シャツ", romaji: "shatsu", meaning: "Kemeja (shirt)" },
+            { jp: "ジュース", romaji: "juusu", meaning: "Jus (juice)" },
+            { jp: "チョコ", romaji: "choko", meaning: "Cokelat (chocolate)" },
+            { jp: "メニュー", romaji: "menyuu", meaning: "Menu" }
+        ]
+    },
+    {
+        id: "small-vowels",
+        category: "特殊音 (Tokushuon) - Vokal Kecil (a, i, u, e, o)",
+        hira: "ぁ ぃ ぅ ぇ ぉ",
+        kata: "ァ ィ ゥ ェ ォ",
+        romaji: "a, i, u, e, o (kecil)",
+        description: "Vokal kecil (a, i, u, e, o) terutama digunakan dalam Katakana untuk membentuk bunyi fonem bahasa asing (kata serapan luar negeri) yang aslinya tidak terdapat dalam bahasa Jepang asli. Huruf kecil ini mengubah bunyi vokal konsonan sebelumnya.",
+        rules: [
+            "Bunyi F: フ (fu) + ァ/ィ/ェ/ォ = ファ (fa), フィ (fi), フェ (fe), フォ (fo).",
+            "Bunyi TI / TU: テ (te) + ィ = ティ (ti), ト (to) + ゥ = トゥ (tu).",
+            "Bunyi DI / DU: デ (de) + ィ = ディ (di), ド (do) + ゥ = ドゥ (du).",
+            "Bunyi SHE / CHE: シ (shi) + ェ = シェ (she), チ (chi) + ェ = チェ (che).",
+            "Bunyi W: ウ (u) + ィ/ェ/ォ = ウィ (wi), ウェ (we), ウォ (wo).",
+            "Bunyi V: ヴ (vu) + ァ/ィ/ぅ/ぇ/ォ = ヴァ (va), ヴィ (vi), ヴェ (ve), ヴォ (vo)."
+        ],
+        examples: [
+            { jp: "ファイト", romaji: "faito", meaning: "Semangat (fight)" },
+            { jp: "パーティー", romaji: "paatii", meaning: "Pesta (party)" },
+            { jp: "カフェ", romaji: "kafe", meaning: "Kafe (cafe)" },
+            { jp: "フォーク", romaji: "fooku", meaning: "Garpu (fork)" },
+            { jp: "シェア", romaji: "shea", meaning: "Berbagi (share)" },
+            { jp: "チェック", romaji: "chekku", meaning: "Periksa (check)" },
+            { jp: "ウィキ", romaji: "wiki", meaning: "Wiki" },
+            { jp: "ディズニー", romaji: "dizunii", meaning: "Disney" }
+        ]
+    },
+    {
+        id: "choonpu-particles",
+        category: "Tanda Pemanjang (ー) & Partikel Khusus",
+        hira: "は (wa) / を (o) / へ (e)",
+        kata: "ー (Chōonpu)",
+        romaji: "Pemanjang vokal & Perubahan bunyi partikel",
+        description: "Aturan bunyi khusus yang wajib diketahui pembelajar bahasa Jepang untuk pembacaan Katakana dan partikel Hiragana.",
+        rules: [
+            "Tanda 'ー' (Chōonpu) pada Katakana memperpanjang vokal huruf sebelumnya selama 1 ketukan/mora penuh.",
+            "Partikel 'は' (ha) jika berfungsi sebagai partikel penanda topik/subjek kalimat DIBACA 'wa'.",
+            "Partikel 'を' (wo) jika berfungsi sebagai partikel penanda objek kalimat DIBACA 'o'.",
+            "Partikel 'へ' (he) jika berfungsi sebagai partikel penunjuk arah tujuan gerak DIBACA 'e'."
+        ],
+        examples: [
+            { jp: "コーヒー", romaji: "koohii", meaning: "Kopi (vokal o dan i dipanjangkan)" },
+            { jp: "ケーキ", romaji: "keeki", meaning: "Kue (cake)" },
+            { jp: "スーパー", romaji: "suupaa", meaning: "Supermarket" },
+            { jp: "僕は（ぼくは）", romaji: "boku wa", meaning: "Saya (sebagai subjek)" },
+            { jp: "夢を（ゆめを）", romaji: "yume o", meaning: "Mimpi (sebagai objek)" },
+            { jp: "其処へ（そこへ）", romaji: "soko e", meaning: "Ke sana (sebagai arah tujuan)" }
+        ]
+    }
+];
+
 // 4. DATA HIRAGANA & KATAKANA DAKUON, HANDAKUON, SOKUON, & SMALL KANA
 const kanaDakuonData = [
     // Ga, Gi, Gu, Ge, Go
@@ -1416,6 +1575,28 @@ kanaDakuonData.forEach(([hira, romaji, kata, meaning, word]) => {
         word: word,
         meaning: meaning.replace("Hiragana", "Katakana")
     };
+});
+
+// Registrasi Kana Yōon (Kombinasi)
+yoonRows.forEach(row => {
+    row.forEach(([hira, romaji, kata]) => {
+        kanaLookup[hira] = {
+            type: "Hiragana (Yōon)",
+            char: hira,
+            romaji: romaji,
+            counterpart: kata,
+            word: `${hira} (${romaji})`,
+            meaning: `Bunyi gabungan Hiragana '${hira}' (${romaji})`
+        };
+        kanaLookup[kata] = {
+            type: "Katakana (Yōon)",
+            char: kata,
+            romaji: romaji,
+            counterpart: hira,
+            word: `${kata} (${romaji})`,
+            meaning: `Bunyi gabungan Katakana '${kata}' (${romaji})`
+        };
+    });
 });
 
 // Tambahan kata-kata khas/frasa dalam lirik agar interaktif
@@ -2731,6 +2912,10 @@ if (typeof window !== 'undefined') {
     window.lyricsData = lyricsData;
     window.kanaData = kanaData;
     window.kanaDakuonData = kanaDakuonData;
+    window.gojuonRows = gojuonRows;
+    window.dakuonRows = dakuonRows;
+    window.yoonRows = yoonRows;
+    window.smallKanaGuide = smallKanaGuide;
     window.kanaLookup = kanaLookup;
     window.kanjiReadings = kanjiReadings;
     window.specialWordsLookup = specialWordsLookup;
@@ -2742,6 +2927,10 @@ if (typeof module !== 'undefined' && module.exports) {
         lyricsData,
         kanaData,
         kanaDakuonData,
+        gojuonRows,
+        dakuonRows,
+        yoonRows,
+        smallKanaGuide,
         kanaLookup,
         kanjiReadings,
         specialWordsLookup,

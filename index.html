@@ -89,8 +89,8 @@
 
             <input type="text" id="kanaSearch" placeholder="Cari huruf atau Romaji (contoh: 'a', 'ka', 'き', 'ア')...">
 
-            <!-- Grid tunggal responsif & rapi -->
-            <div id="kanaGrid" class="kana-grid"></div>
+            <!-- Wadah tabel Kana terstruktur & responsif -->
+            <div id="kanaGrid" class="kana-container"></div>
         </section>
 
         <!-- HALAMAN 3: KOSAKATA & HAFALAN (HARIAN, HEWAN, PERCAKAPAN, BENDA, BUAH, LIRIK) -->
@@ -158,6 +158,17 @@
             <button id="popupSpeakBtn" class="btn-popup-speak">🔊 Dengarkan Pengucapan</button>
         </div>
     </div>
+
+    <!-- Tombol Mengambang Scroll ke Atas (Rocket Back to Top) -->
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" title="Kembali ke atas 🚀" aria-label="Kembali ke atas">
+        <span class="rocket-icon">🚀</span>
+    </button>
+
+    <!-- Tombol Mengambang Ganti Mode Kana (Hiragana <-> Katakana) -->
+    <button id="floatingKanaToggleBtn" class="floating-kana-toggle-btn" title="Ganti ke Katakana" aria-label="Ganti ke Katakana">
+        <span class="floating-kana-char" id="floatingKanaChar">ア</span>
+        <span class="floating-kana-badge">🔄</span>
+    </button>
 
     <!-- Modul JavaScript Berbasis Standar OOP -->
     <script src="js/data.js"></script>

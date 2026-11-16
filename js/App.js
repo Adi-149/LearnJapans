@@ -43,7 +43,7 @@ class App {
         const allKanaList = (typeof kanaDakuonData !== "undefined")
             ? [...kanaData, ...kanaDakuonData]
             : kanaData;
-        this.kanaManager = new KanaManager(allKanaList, this.speechService);
+        this.kanaManager = new KanaManager(allKanaList, this.speechService, this.modalManager);
 
         // 6. Inisialisasi Manajer Kosakata & Hafalan (Harian, Benda, Buah, Lirik)
         this.vocabManager = new VocabularyManager(
@@ -57,10 +57,11 @@ class App {
         // 7. Inisialisasi Manajer Kuis
         this.quizManager = new QuizManager(quizQuestions);
 
-        // Pasang event navigasi, tombol kontrol, dan fitur dark mode
+        // Pasang event navigasi, tombol kontrol, fitur dark mode, dan tombol scroll roket
         this.bindNavigation();
         this.bindLyricsControls();
         this.initTheme();
+        this.initScrollToTop();
 
         // Render tampilan awal
         this.lyricsManager.render();
@@ -102,6 +103,12 @@ class App {
 
         // Scroll halus ke atas
         window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Perbarui visibilitas tombol mengambang saat pindah halaman
+        const floatingKanaBtn = document.getElementById("floatingKanaToggleBtn");
+        if (floatingKanaBtn) {
+            floatingKanaBtn.classList.remove("visible");
+        }
     }
 
     /**
@@ -181,6 +188,54 @@ class App {
         } else {
             localStorage.setItem("learnjapansub_theme", "light");
             if (themeBtn) themeBtn.innerHTML = "🌙 Mode Gelap";
+        }
+    }
+
+    /**
+     * Inisialisasi tombol scroll ke atas (roket) dan tombol mengambang ganti mode Kana
+     */
+    initScrollToTop() {
+        const scrollBtn = document.getElementById("scrollToTopBtn");
+        const floatingKanaBtn = document.getElementById("floatingKanaToggleBtn");
+        if (!scrollBtn && !floatingKanaBtn) return;
+
+        // Tampilkan tombol saat pengguna scroll ke bawah lebih dari 200px
+        const handleScroll = () => {
+            const isScrolled = window.scrollY > 200;
+
+            if (scrollBtn) {
+                if (isScrolled) {
+                    scrollBtn.classList.add("visible");
+                } else {
+                    scrollBtn.classList.remove("visible");
+                }
+            }
+
+            if (floatingKanaBtn) {
+                if (isScrolled && this.currentPage === "kana") {
+                    floatingKanaBtn.classList.add("visible");
+                } else {
+                    floatingKanaBtn.classList.remove("visible");
+                }
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        // Aksi klik tombol roket: animasi roket meluncur dan scroll halus ke paling atas
+        if (scrollBtn) {
+            scrollBtn.addEventListener("click", () => {
+                scrollBtn.classList.add("launching");
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+                // Reset status kelas animasi setelah roket selesai meluncur
+                setTimeout(() => {
+                    scrollBtn.classList.remove("launching");
+                }, 800);
+            });
         }
     }
 }
